@@ -44,13 +44,15 @@ TaskBuddy mendukung sistem multi-user dengan role "Admin" dan "Member". Setiap p
 ---
 
 ### 4. Sorting dan Searching - Raditya Bintang D. R. (245150400111037)
-TaskBuddy memungkinkan pengguna untuk mengelola sub-tugas dengan fitur sorting dan searching. Sorting dilakukan berdasarkan prioritas dan deadline, sedangkan searching memungkinkan pencarian tugas berdasarkan ID secara rekursif di seluruh tree.
+TaskBuddy memungkinkan pengguna untuk mengelola sub-tugas dengan fitur sorting dan searching. Sorting dilakukan berdasarkan prioritas dan deadline, sedangkan searching memungkinkan pencarian tugas berdasarkan nama menggunakan linear search.
 
 #### Fitur:
-- Sorting sub-tugas berdasarkan:
-  - **Prioritas**: Nilai prioritas (1=tinggi, 5=terendah).
-  - **Deadline**: Jika prioritas sama, sub-tugas dengan deadline lebih dekat akan berada di atas.
-- Searching tugas berdasarkan ID secara rekursif.
+- **Sorting**:
+  - Sorting sub-tugas berdasarkan prioritas (1=tinggi, 5=terendah).
+  - Jika prioritas sama, sub-tugas dengan deadline lebih dekat akan berada di atas.
+- **Searching**:
+  - Pencarian tugas berdasarkan nama menggunakan linear search.
+  - Pencarian dilakukan secara rekursif pada seluruh tree tugas.
 
 ---
 

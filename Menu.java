@@ -27,7 +27,7 @@ public class Menu {
             System.out.println("1. Tampilkan Struktur Tugas");
             System.out.println("2. Tambah Tugas/Kategori Baru");
             System.out.println("3. Urutkan Seluruh Tree Tugas");
-            System.out.println("4. Cari Tugas (berdasarkan ID)");
+            System.out.println("4. Cari Tugas (berdasarkan Nama)");
             System.out.println("5. Undo Aksi Terakhir");
             System.out.println("6. Redo Aksi");
             System.out.println("7. Lihat Log Aktivitas");
@@ -59,7 +59,7 @@ public class Menu {
                 taskManager.sortEntireTreeByPriority();
                 break;
             case 4:
-                taskManager.searchTask(scanner);
+                taskManager.searchTaskByName(scanner); // Update untuk pencarian berdasarkan nama
                 break;
             case 5:
                 taskManager.undoAction();

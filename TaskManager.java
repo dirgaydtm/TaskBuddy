@@ -96,19 +96,27 @@ public class TaskManager {
         return null;
     }
 
-    public void searchTask(Scanner scanner) {
-        System.out.print("Masukkan ID tugas yang dicari: ");
-        int id = Integer.parseInt(scanner.nextLine());
-        Task foundTask = findTaskById(id);
-
-        if (foundTask != null && foundTask != root) {
-            System.out.println("\n--- Hasil Pencarian ---");
-            System.out.println(foundTask);
-            System.out.println("Deskripsi: " + foundTask.getDescription());
-            System.out.println("------------------------\n");
-        } else {
-            System.out.println("Tugas dengan ID " + id + " tidak ditemukan.");
+    public void searchTaskByName(Scanner scanner) {
+        System.out.print("Masukkan nama tugas yang dicari: ");
+        String query = scanner.nextLine().toLowerCase();
+        System.out.println("\n--- Hasil Pencarian ---");
+        boolean found = searchTaskByNameRecursive(root, query);
+        if (!found) {
+            System.out.println("Tidak ada tugas dengan nama yang sesuai.");
         }
+        System.out.println("------------------------\n");
+    }
+
+    private boolean searchTaskByNameRecursive(Task current, String query) {
+        boolean found = false;
+        if (current.getName().toLowerCase().contains(query)) {
+            System.out.println(current);
+            found = true;
+        }
+        for (Task subTask : current.getSubTasks()) {
+            found |= searchTaskByNameRecursive(subTask, query);
+        }
+        return found;
     }
 
     public void sortEntireTreeByPriority() {

@@ -1,48 +1,90 @@
-# TaskBuddy
+# TaskBuddy - Kelompok GacorKang
 
-TaskBuddy adalah aplikasi manajemen tugas berbasis Java yang memudahkan pengguna dalam mengelola, mengorganisasi, dan memantau tugas-tugas secara terstruktur. Aplikasi ini mendukung sistem multi-user, pencatatan aktivitas, serta fitur undo/redo untuk kenyamanan pengguna.
+TaskBuddy adalah aplikasi manajemen tugas berbasis Java yang dirancang untuk membantu pengguna mengelola, mengorganisasi, dan memantau tugas-tugas secara terstruktur. Aplikasi ini mendukung sistem multi-user, pencatatan aktivitas, serta fitur undo/redo untuk kenyamanan pengguna. Berikut adalah deskripsi fitur dan pembagian tugas dalam pengembangan aplikasi ini.
 
-## Fitur Lengkap & Penjelasan
+# Anggota :
+- Dirga Yuditama (245150400111034)
+- Frisnel Aditia Virgo Ginting (Menghilang, tidak kerja)
+- Muhammad Nabiel Yandra (245150400111036)
+- Prasetya Hafidz Ramadhan (245150407111053)
+- Raditya Bintang D. R. (245150400111037)
 
-### 1. Manajemen Tugas Berbasis Tree
+---
 
-- Struktur Pohon (Tree): Setiap tugas dapat memiliki sub-tugas tanpa batasan kedalaman, sehingga pengguna dapat membuat kategori, sub-kategori, dan tugas secara hierarkis.
-- Tambah Tugas/Kategori: Pengguna dapat menambahkan tugas atau kategori baru di bawah tugas/kategori manapun.
-- Visualisasi Struktur Tugas: Menampilkan seluruh struktur tugas dan sub-tugas dalam bentuk pohon yang mudah dibaca.
-- Hapus & Edit Tugas: (opsional, dapat dikembangkan) Menghapus atau mengedit tugas tertentu.
+## Fitur dan Pembagian Tugas
 
-### 2. Pengelolaan Sub-Tugas
+### 1. Struktur Tugas (Tree) - Muhammad Nabiel Yandra (245150400111036)
+TaskBuddy menggunakan struktur pohon (tree) untuk mengelola tugas dan sub-tugas. Setiap tugas dapat memiliki sub-tugas tanpa batasan kedalaman, sehingga pengguna dapat membuat kategori, sub-kategori, dan tugas secara hierarkis. Fitur ini memungkinkan pengguna untuk memvisualisasikan tugas dalam bentuk pohon yang mudah dibaca.
 
-- Sorting Sub-Tugas: Sub-tugas di bawah suatu tugas dapat diurutkan berdasarkan prioritas (1=tinggi, 5=terendah) menggunakan algoritma bubble sort.
-- Pencarian Tugas: Mencari tugas berdasarkan ID secara rekursif di seluruh tree.
+#### Fitur:
+- Tambah tugas atau kategori baru di bawah tugas/kategori tertentu.
+- Visualisasi struktur tugas dalam bentuk pohon.
+- Pengelolaan sub-tugas secara hierarkis.
 
-### 3. Manajemen Pengguna
+---
 
-- Multi-User: Mendukung banyak pengguna dengan sistem antrian giliran (queue).
-- Ganti Giliran: Pengguna dapat bergantian mengelola tugas sesuai urutan antrian.
-- Daftar Pengguna: Menampilkan seluruh pengguna beserta peran (Admin/Member).
+### 2. Log Perubahan (Double Linked List) - Dirga Yuditama (245150400111034)
+TaskBuddy mencatat setiap aktivitas penting yang dilakukan pengguna, seperti penambahan tugas, pengurutan, undo, redo, dan pergantian giliran pengguna. Log ini disimpan menggunakan struktur data double linked list, sehingga memungkinkan pencatatan yang efisien dan fleksibel.
 
-### 4. Undo & Redo
+#### Fitur:
+- Pencatatan aktivitas dengan timestamp.
+- Riwayat aktivitas dapat dilihat oleh pengguna dengan role "Admin".
+- Penyimpanan log menggunakan double linked list untuk kemudahan traversal.
 
-- Undo: Membatalkan aksi terakhir pada struktur tugas (misal: penambahan, pengurutan).
-- Redo: Mengulangi aksi yang telah di-undo.
-- Penyimpanan State: Setiap perubahan pada tree tugas akan disimpan sebagai state untuk mendukung fitur undo/redo.
+---
 
-### 5. Activity Log
+### 3. Antrian Pengguna (Queue) - Bersama
+TaskBuddy mendukung sistem multi-user dengan role "Admin" dan "Member". Setiap pengguna memiliki giliran untuk mengelola tugas, yang diatur menggunakan struktur data queue. Sistem ini memastikan bahwa setiap pengguna mendapatkan giliran secara bergantian.
 
-- Pencatatan Aktivitas: Setiap aksi penting (tambah tugas, urutkan, undo, redo, ganti user) dicatat lengkap dengan timestamp.
-- Riwayat Aktivitas: Pengguna dapat melihat seluruh log aktivitas yang telah terjadi.
+#### Fitur:
+- Sistem antrian pengguna untuk pergantian giliran.
+- Role pengguna: "Admin" memiliki akses penuh, sedangkan "Member" memiliki akses terbatas.
+- Menampilkan daftar pengguna beserta perannya.
 
-### 6. Antarmuka Menu Interaktif
+---
 
-- Menu CLI: Menu berbasis teks yang interaktif dan mudah digunakan.
-- Validasi Input: Menangani input yang tidak valid agar aplikasi tetap stabil.
+### 4. Sorting dan Searching - Raditya Bintang D. R. (245150400111037)
+TaskBuddy memungkinkan pengguna untuk mengelola sub-tugas dengan fitur sorting dan searching. Sorting dilakukan berdasarkan prioritas dan deadline, sedangkan searching memungkinkan pencarian tugas berdasarkan ID secara rekursif di seluruh tree.
+
+#### Fitur:
+- Sorting sub-tugas berdasarkan:
+  - **Prioritas**: Nilai prioritas (1=tinggi, 5=terendah).
+  - **Deadline**: Jika prioritas sama, sub-tugas dengan deadline lebih dekat akan berada di atas.
+- Searching tugas berdasarkan ID secara rekursif.
+
+---
+
+### 5. Manajemen Pengguna - Prasetya Hafidz Ramadhan (245150407111053)
+TaskBuddy menyediakan fitur untuk mengelola pengguna, termasuk penambahan pengguna default, pergantian giliran, dan pembatasan akses berdasarkan role. Fitur ini memastikan bahwa setiap pengguna memiliki peran yang jelas dalam aplikasi.
+
+#### Fitur:
+- Penambahan pengguna default ("Admin" dan "Member").
+- Pergantian giliran pengguna secara otomatis.
+- Pembatasan akses untuk pengguna dengan role "Member".
+
+---
+
+### 6. CLI dan Logika Utama - Bersama
+TaskBuddy menggunakan antarmuka berbasis teks (CLI) yang interaktif dan mudah digunakan. Logika utama aplikasi, seperti pengelolaan menu, validasi input, dan integrasi fitur lainnya, dikembangkan bersama oleh tim.
+
+#### Fitur:
+- Menu CLI untuk memilih opsi dengan angka.
+- Validasi input untuk menangani input yang tidak valid.
+- Integrasi semua fitur ke dalam logika utama aplikasi.
+
+---
 
 ## Cara Menjalankan
 
-1. Compile seluruh file Java.
-2. Jalankan `Main.java`.
-3. Ikuti instruksi pada menu yang muncul.
+1. **Compile seluruh file Java**:
+   ```bash
+   javac *.java
+   ```
+2. **Jalankan `Main.java`**:
+   ```bash
+   java Main
+   ```
+3. **Ikuti instruksi pada menu yang muncul**.
 
 ## Struktur File
 

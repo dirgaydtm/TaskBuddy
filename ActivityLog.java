@@ -25,7 +25,7 @@ public class ActivityLog {
     }
 
     public void printLogs() {
-        System.out.println("\n--- 📜 Log Aktivitas ---");
+        System.out.println("\n--- Log Aktivitas ---");
         if (head == null) {
             System.out.println("Tidak ada aktivitas yang tercatat.");
             return;

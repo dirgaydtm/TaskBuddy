@@ -44,10 +44,16 @@ public class UndoRedoManager {
     public boolean canRedo() {
         return currentStateIndex < history.size() - 1;
     }
-    
+
     private Task cloneTaskTree(Task original) {
         if (original == null) return null;
-        Task clone = new Task(original.getName(), original.getDescription(), original.getPriority(), original.getDeadline());
+        Task clone = new Task(
+            original.getId(),
+            original.getName(),
+            original.getDescription(),
+            original.getPriority(),
+            original.getDeadline()
+        );
         for (Task subTask : original.getSubTasks()) {
             clone.addSubTask(cloneTaskTree(subTask));
         }

@@ -1,30 +1,13 @@
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 public class UserManager {
-    private List<User> allUsers;
     private Queue<User> userQueue;
 
     public UserManager() {
-        this.allUsers = new ArrayList<>();
-        this.userQueue = new LinkedList<>(); // LinkedList mengimplementasikan interface Queue
-    }
-
-    public void addUser(User user) {
-        allUsers.add(user);
-        userQueue.add(user); // Masukkan ke antrian
-        System.out.println("User '" + user.getUsername() + "' berhasil ditambahkan.");
-    }
-
-    public User findUserByUsername(String username) {
-        for (User user : allUsers) {
-            if (user.getUsername().equalsIgnoreCase(username)) {
-                return user;
-            }
-        }
-        return null;
+        this.userQueue = new LinkedList<>();
+        userQueue.add(new User("Admin"));
+        userQueue.add(new User("Member"));
     }
 
     public User getCurrentUser() {
@@ -34,15 +17,15 @@ public class UserManager {
     public void nextTurn() {
         if (!userQueue.isEmpty()) {
             User currentUser = userQueue.poll(); // Ambil dari depan
-            userQueue.add(currentUser); 
-            System.out.println("\n🔄 Giliran sekarang: " + getCurrentUser().getUsername());
+            userQueue.add(currentUser);
+            System.out.println("\nGiliran sekarang: " + getCurrentUser().getRole());
         }
     }
-    
+
     public void listAllUsers() {
-        System.out.println("\n--- 👥 Daftar Semua Pengguna ---");
-        for (User user : allUsers) {
-            System.out.println("- " + user.getUsername() + " (" + user.getRole() + ")");
+        System.out.println("\n--- Daftar Semua Pengguna ---");
+        for (User user : userQueue) {
+            System.out.println("- " + user.getRole());
         }
         System.out.println("-".repeat(28));
     }

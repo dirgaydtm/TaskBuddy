@@ -17,19 +17,17 @@ public class Menu {
         this.undoRedoManager = new UndoRedoManager();
         initializeData();
     }
-    
+
     private void initializeData() {
-        userManager.addUser(new User("Andi", "Admin"));
-        userManager.addUser(new User("Budi", "Member"));
         undoRedoManager.saveState(taskManager.getRoot());
-        activityLog.addLog("Aplikasi dimulai dan data awal dimuat.");
+        activityLog.addLog("Aplikasi dimulai dengan pengguna default: Admin dan Member.");
     }
 
     public void display() {
         while (true) {
             User currentUser = userManager.getCurrentUser();
             System.out.println("\n==========================================");
-            System.out.println("Pengguna Aktif: " + currentUser.getUsername() + " (" + currentUser.getRole() + ")");
+            System.out.println("Pengguna Aktif: " + currentUser.getRole());
             System.out.println("         TaskBuddy - Menu Utama");
             System.out.println("==========================================");
             System.out.println("1. Tampilkan Struktur Tugas");
@@ -55,6 +53,7 @@ public class Menu {
     }
 
     private void handleMenuChoice(int choice) {
+        User currentUser = userManager.getCurrentUser();
         switch (choice) {
             case 1:
                 taskManager.visualizeTaskTree();
@@ -63,7 +62,11 @@ public class Menu {
                 addTask();
                 break;
             case 3:
-                sortTasks();
+                taskManager.sortEntireTreeByPriority();
+                String logMessage = currentUser.getRole() + " mengurutkan seluruh tree tugas.";
+                activityLog.addLog(logMessage);
+                undoRedoManager.saveState(taskManager.getRoot());
+                taskManager.visualizeTaskTree();
                 break;
             case 4:
                 searchTask();
@@ -75,7 +78,11 @@ public class Menu {
                 redoAction();
                 break;
             case 7:
-                activityLog.printLogs();
+                if ("Member".equals(currentUser.getRole())) {
+                    System.out.println("Akses ditolak! Pengguna dengan role 'Member' tidak dapat melihat log aktivitas.");
+                } else {
+                    activityLog.printLogs();
+                }
                 break;
             case 8:
                 userManager.nextTurn();
@@ -84,7 +91,7 @@ public class Menu {
                 userManager.listAllUsers();
                 break;
             case 0:
-                System.out.println(" Terima kasih telah menggunakan TaskBuddy!");
+                System.out.println("Terima kasih telah menggunakan TaskBuddy!");
                 System.exit(0);
                 break;
             default:
@@ -108,43 +115,31 @@ public class Menu {
         String desc = scanner.nextLine();
         System.out.print("Prioritas (1-5, 1=tinggi): ");
         int priority = Integer.parseInt(scanner.nextLine());
-        System.out.print("Deadline (YYYY-MM-DD): ");
+
         LocalDate deadline = null;
-        try {
-            deadline = LocalDate.parse(scanner.nextLine());
-        } catch (DateTimeParseException e) {
-            System.out.println("Format tanggal salah, deadline diatur ke null.");
+        while (deadline == null) {
+            System.out.print("Deadline (YYYY-MM-DD): ");
+            String deadlineInput = scanner.nextLine();
+            try {
+                LocalDate parsedDate = LocalDate.parse(deadlineInput);
+                if (parsedDate.isBefore(LocalDate.now())) {
+                    System.out.println("Tanggal tidak valid. Deadline tidak boleh kurang dari tanggal hari ini (" + LocalDate.now() + ").");
+                } else {
+                    deadline = parsedDate;
+                }
+            } catch (DateTimeParseException e) {
+                System.out.println("Format tanggal salah. Harap masukkan tanggal sesuai format kalender (YYYY-MM-DD).");
+            }
         }
 
-        Task newTask = new Task(name, desc, priority, deadline);
+        Task newTask = taskManager.createTask(name, desc, priority, deadline);
         parentTask.addSubTask(newTask);
 
-        String logMessage = userManager.getCurrentUser().getUsername() + " menambahkan tugas '" + name + "' di bawah '" + parentTask.getName() + "'.";
-        activityLog.addLog(logMessage);
+        activityLog.addLog(userManager.getCurrentUser().getRole() + " menambahkan tugas '" + name + "' di bawah '" + parentTask.getName() + "'.");
         undoRedoManager.saveState(taskManager.getRoot());
-        
         System.out.println("Tugas '" + name + "' berhasil ditambahkan.");
     }
-    
-    private void sortTasks() {
-        System.out.print("Masukkan ID dari task yang sub-tugasnya ingin diurutkan: ");
-        int parentId = Integer.parseInt(scanner.nextLine());
-        Task parentTask = taskManager.findTaskById(parentId);
 
-        if (parentTask == null) {
-            System.out.println("Task dengan ID " + parentId + " tidak ditemukan.");
-            return;
-        }
-
-        taskManager.sortSubTasksByPriority(parentTask);
-        
-        String logMessage = userManager.getCurrentUser().getUsername() + " mengurutkan sub-tugas di bawah '" + parentTask.getName() + "'.";
-        activityLog.addLog(logMessage);
-        undoRedoManager.saveState(taskManager.getRoot());
-        
-        taskManager.visualizeTaskTree();
-    }
-    
     private void searchTask() {
         System.out.print("Masukkan ID tugas yang dicari: ");
         int id = Integer.parseInt(scanner.nextLine());
@@ -165,7 +160,7 @@ public class Menu {
         if (previousState != null) {
             taskManager.getRoot().getSubTasks().clear();
             taskManager.getRoot().getSubTasks().addAll(previousState.getSubTasks());
-            activityLog.addLog(userManager.getCurrentUser().getUsername() + " melakukan UNDO.");
+            activityLog.addLog(userManager.getCurrentUser().getRole() + " melakukan UNDO.");
             taskManager.visualizeTaskTree();
         }
     }
@@ -175,7 +170,7 @@ public class Menu {
         if (nextState != null) {
             taskManager.getRoot().getSubTasks().clear();
             taskManager.getRoot().getSubTasks().addAll(nextState.getSubTasks());
-            activityLog.addLog(userManager.getCurrentUser().getUsername() + " melakukan REDO.");
+            activityLog.addLog(userManager.getCurrentUser().getRole() + " melakukan REDO.");
             taskManager.visualizeTaskTree();
         }
     }

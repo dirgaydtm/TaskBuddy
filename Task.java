@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Task {
-    private static int nextId = 1;
     private int id;
     private String name;
     private String description;
@@ -11,8 +10,8 @@ public class Task {
     private LocalDate deadline;
     private List<Task> subTasks;
 
-    public Task(String name, String description, int priority, LocalDate deadline) {
-        this.id = nextId++;
+    public Task(int id, String name, String description, int priority, LocalDate deadline) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.priority = priority;
